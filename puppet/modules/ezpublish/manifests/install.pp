@@ -20,7 +20,7 @@ define ezpublish::install(
 			src		=> $src,
 			dest	=> $version_archive,
 			require => File[$version_archive],
-			notify	=> Extract_file["${version_archive}/${filename}"],
+			#notify	=> Extract_file["${version_archive}/${filename}"],
 		}
 	} else {
 		# Copy to local archive

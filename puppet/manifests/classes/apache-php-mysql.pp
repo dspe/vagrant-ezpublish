@@ -7,7 +7,7 @@
 # PHP version : 5.3        #
 ############################
 
-include apache
+#include apache
 include php
 include mysql
 include stdlib
@@ -15,21 +15,25 @@ include puppi
 
 # Apache Setup
 ##############
-class { 'apache::mod::php': }
+
+class { 'apache':
+  mpm_module => 'prefork',
+}
+
+apache::mod { 'php5': }
+apache::mod {'rewrite': }
 
 apache::vhost { $fqdn:
     priority => '20',
     port => '80',
     docroot => $docroot,
-    configure_firewall => false,
     override => "All"
 }
 
-a2mod { 'rewrite': ensure => present; }
 
 # PHP Extensions
 ################
-php::module { ['xdebug', 'mysql', 'curl', 'gd', 'xsl', 'mcrypt', 'imagick', 'dev', 'cli' ] :
+php::module { [ 'bz2', 'curl', 'dom', 'exif', 'fileinfo', 'ftp', 'gd', 'iconv', 'json', 'mbstring', 'mysqli', 'pcntl', 'pcre', 'pdo-mysql', 'posix', 'reflection', 'simplexml', 'spl', 'ssl', 'xmlreader', 'zlib', 'xml', 'libxml', 'xsl' ] :
 	notify => [Service['httpd'], ],
 }
 
